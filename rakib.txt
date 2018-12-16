@@ -1,0 +1,120 @@
+********************facebook******************
+
+
+
+package com.example.rakib.pstucsefaculty;
+
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import static android.R.attr.phoneNumber;
+
+public class Students_of_cse_12th_batch extends AppCompatActivity {
+Button b;
+
+    Button c;
+    Button share;
+    int MY_PERMISSIONS_REQUEST_CALL_PHONE = 101;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_students_of_cse_12th_batch);
+
+    Button b= (Button)findViewById(R.id.call);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                call();
+            }
+        });
+
+        share=(Button)findViewById(R.id.share);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("text/plain");
+                    i.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    String sAux = "\nLet me recommend you this application\n\n";
+                    sAux = sAux + "https://web.facebook.com/md.r.islam.9461";
+                    i.putExtra(Intent.EXTRA_TEXT, sAux);
+                    startActivity(Intent.createChooser(i, "choose one"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
+            }
+        });
+
+        c=(Button)findViewById(R.id.gmail);
+        c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Intent.ACTION_SEND);
+                String[] recipients={"mailto@gmail.com"};
+                intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Subject text here...");
+                intent.putExtra(Intent.EXTRA_TEXT,"Body of the content here...");
+                intent.putExtra(Intent.EXTRA_CC,"kkkkkk@gmail.com");
+                intent.setType("text/html");
+                intent.setPackage("com.google.android.gm");
+                startActivity(Intent.createChooser(intent, "Send mail"));
+            }
+        });
+
+        Button facebookButton = (Button) findViewById(R.id.facebook);
+        facebookButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View arg0)
+            {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://web.facebook.com/md.r.islam.9461"));
+                startActivity(browserIntent);
+
+            }
+        });
+
+    }
+
+
+    private void call() {
+
+        try {
+
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:01859948050"));
+
+
+
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                return;
+            }
+
+            startActivity(callIntent);
+
+
+
+        } catch (ActivityNotFoundException e) {
+            Log.e("helloAndroid","Call failed",e);
+        }
+    }
+
+
+}
+
